@@ -230,7 +230,7 @@ def createAlbum(idArtist):
     if 'genre' not in request.json:
         return 'no hay campos', 400
         
-    if type(request.json['name']) is not str or type(request.json['genre']) is not int:
+    if type(request.json['name']) is not str or type(request.json['genre']) is not str:
         return 'Campos con valores invalidos', 400
 
     # nota mental cuando se haga el deploy cambiar por el link del deploy
