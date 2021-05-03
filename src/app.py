@@ -353,12 +353,15 @@ def playAlbumsTrack(id):
 @app.route('/albums/<albumId>/tracks', methods=['POST'])
 def createTrack(albumId):
 
+    if 'name' not in request.json:
+        return 'no hay campos', 400
+    if 'duration' not in request.json:
+        return 'no hay campos', 400
+
     if type(request.json['name']) is not str or type(request.json['duration']) is not float:
        return 'Campos con valores invalidos', 400
 
-    if (request.json['name'] == None or request.json['name'] == "") or request.json['duration'] == None:
-       return 'Uno o los dos campos estan vacios', 400
-
+        
     # nota mental cuando se haga el deploy cambiar por el link del deploy
     link = 'https://t2-willmer-flask.herokuapp.com/tracks'
 
@@ -383,7 +386,10 @@ def createTrack(albumId):
     if Track.query.get(id):
         track = Track.query.get(id)
         result = track_schema.dump(track)
-        return track_schema.jsonify(result), 409
+        result['self'] = result['_self']
+        del result['_self']
+
+        return jsonify(track_prueba), 409
 
     duration = request.json['duration']
     times_played = 0
