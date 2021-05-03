@@ -389,7 +389,7 @@ def createTrack(albumId):
         result['self'] = result['_self']
         del result['_self']
 
-        return jsonify(track_prueba), 409
+        return jsonify(result), 409
 
     duration = request.json['duration']
     times_played = 0
