@@ -115,20 +115,12 @@ tracks_schema = TrackSchema(many=True)
 @app.route('/artists', methods=['POST'])
 def createArtist():
     # encoded = b64encode(string.encode()).decode('utf-8')
-    print("----")
-    print(type(request.json))
-    print(request.json)
-    print("----")
-    print('name' in request.json)
-    print('age' in request.json)
     
     if 'name' not in request.json:
         return 'no hay campos', 400
     if 'age' not in request.json:
         return 'no hay campos', 400
-    
-    print("----")
-    
+        
     if type(request.json['name']) is not str or type(request.json['age']) is not int:
         return 'Campos con valores invalidos', 400
 
@@ -233,14 +225,16 @@ def createAlbum(idArtist):
     if artistFound is None:
        return 'No hay registros de artistas con el id solicitado', 422
 
-    if type(request.json['name']) is not str or type(request.json['genre']) is not str:
-       return 'Campos con valores invalidos', 400
-
-    if (request.json['name'] == None or request.json['name'] == "") or request.json['genre'] == None or request.json['genre'] == "":
-       return 'Uno o los dos campos estan vacios', 400
+    if 'name' not in request.json:
+        return 'no hay campos', 400
+    if 'genre' not in request.json:
+        return 'no hay campos', 400
+        
+    if type(request.json['name']) is not str or type(request.json['genre']) is not int:
+        return 'Campos con valores invalidos', 400
 
     # nota mental cuando se haga el deploy cambiar por el link del deploy
-    link = 'http://localhost:5000/albums'
+    link = 'https://t2-willmer-flask.herokuapp.com/albums'
 
     name = request.json['name']
 
@@ -254,7 +248,10 @@ def createAlbum(idArtist):
     if Album.query.get(id):
         album = Album.query.get(id)
         result = album_schema.dump(album)
-        return album_schema.jsonify(result), 409
+
+        result['self'] = result['_self']
+        del result['_self']
+        return jsonify(result), 409
 
     genre = request.json['genre']
 
@@ -363,7 +360,7 @@ def createTrack(albumId):
        return 'Uno o los dos campos estan vacios', 400
 
     # nota mental cuando se haga el deploy cambiar por el link del deploy
-    link = 'http://localhost:5000/tracks'
+    link = 'https://t2-willmer-flask.herokuapp.com/tracks'
 
     albumFound = Album.query.get(albumId)
 
