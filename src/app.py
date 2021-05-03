@@ -115,12 +115,25 @@ tracks_schema = TrackSchema(many=True)
 @app.route('/artists', methods=['POST'])
 def createArtist():
     # encoded = b64encode(string.encode()).decode('utf-8')
-
+    print("----")
+    print(type(request.json))
+    print(request.json)
+    print("----")
+    print('name' in request.json)
+    print('age' in request.json)
+    
+    if 'name' not in request.json:
+        return 'no hay campos', 400
+    if 'age' not in request.json:
+        return 'no hay campos', 400
+    
+    print("----")
+    
     if type(request.json['name']) is not str or type(request.json['age']) is not int:
-       return 'Campos con valores invalidos', 400
+        return 'Campos con valores invalidos', 400
 
-    if (request.json['name'] == None or request.json['name'] == "") or request.json['age'] == None or request.json['age'] == 0:
-       return 'Uno o los dos campos estan vacios', 400
+
+
 
     name = request.json['name']
     nameEncoded = b64encode(name.encode()).decode('utf-8')[:22]
