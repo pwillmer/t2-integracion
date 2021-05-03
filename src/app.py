@@ -10,7 +10,7 @@ from types import SimpleNamespace
 # HAY QUE CAMBIAR EL LINK DE LA BASE DE DATOS CUANDO HAGAS DEPLOY
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://natkkblgxxospk:4448076a41c6e1329648718baa17fa78007618ff439274fee5e3bde5fd59b484@ec2-184-73-198-174.compute-1.amazonaws.com:5432/d28cpq21a5am3o'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://natkkblgxxospk:4448076a41c6e1329648718baa17fa78007618ff439274fee5e3bde5fd59b484@ec2-184-73-198-174.compute-1.amazonaws.com:5432/d28cpq21a5am3o'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
