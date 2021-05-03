@@ -82,7 +82,7 @@ db.create_all()
 
 class ArtistSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'age', 'albums', 'tracks', '_self')
+        fields = ('name', 'age', 'albums', 'tracks', 'self')
 
 
 artist_schema = ArtistSchema()
@@ -91,7 +91,7 @@ artists_schema = ArtistSchema(many=True)
 
 class AlbumSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'genre', 'artist', 'tracks', '_self')
+        fields = ('name', 'genre', 'artist', 'tracks', 'self')
 
 
 album_schema = AlbumSchema()
@@ -100,7 +100,7 @@ albums_schema = AlbumSchema(many=True)
 
 class TrackSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'duration', 'times_played', 'artist', 'album', '_self')
+        fields = ('name', 'duration', 'times_played', 'artist', 'album', 'self')
 
 
 track_schema = TrackSchema()
