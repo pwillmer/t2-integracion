@@ -145,7 +145,7 @@ def createArtist():
         result = artist_schema.dump(artist)
         result['self'] = result['_self']
         del result['_self']
-        return artist_schema.jsonify(result), 409
+        return jsonify(result), 409
 
     albums = request.url + "/" + nameEncoded + "/albums"
     tracks = request.url + "/" + nameEncoded + "/tracks"
