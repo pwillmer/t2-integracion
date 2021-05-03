@@ -8,6 +8,9 @@ from types import SimpleNamespace
 
 # mysql+pymysql://{usuarioBDD}:{contrasena}@{IPBDD}/{nombre}
 # HAY QUE CAMBIAR EL LINK DE LA BASE DE DATOS CUANDO HAGAS DEPLOY
+#'postgresql://natkkblgxxospk:4448076a41c6e1329648718baa17fa78007618ff439274fee5e3bde5fd59b484@ec2-184-73-198-174.compute-1.amazonaws.com:5432/d28cpq21a5am3o'
+#'mysql+pymysql://root@localhost/flaskmysql'
+
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://natkkblgxxospk:4448076a41c6e1329648718baa17fa78007618ff439274fee5e3bde5fd59b484@ec2-184-73-198-174.compute-1.amazonaws.com:5432/d28cpq21a5am3o'
@@ -82,7 +85,7 @@ db.create_all()
 
 class ArtistSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'age', 'albums', 'tracks', 'self')
+        fields = ('name', 'age', 'albums', 'tracks', '_self')
 
 
 artist_schema = ArtistSchema()
@@ -91,7 +94,7 @@ artists_schema = ArtistSchema(many=True)
 
 class AlbumSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'genre', 'artist', 'tracks', 'self')
+        fields = ('name', 'genre', 'artist', 'tracks', '_self')
 
 
 album_schema = AlbumSchema()
@@ -100,7 +103,7 @@ albums_schema = AlbumSchema(many=True)
 
 class TrackSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'duration', 'times_played', 'artist', 'album', 'self')
+        fields = ('name', 'duration', 'times_played', 'artist', 'album', '_self')
 
 
 track_schema = TrackSchema()
@@ -133,10 +136,23 @@ def createArtist():
     tracks = request.url + "/" + nameEncoded + "/tracks"
     _self = request.url + "/" + nameEncoded
 
+
     new_artist = Artist(id, name, age, albums, tracks, _self)
+
     db.session.add(new_artist)
     db.session.commit()
-    return artist_schema.jsonify(new_artist), 201
+
+    ##################
+    print("----")
+    artist_prueba = artist_schema.dump(new_artist) #diccionario de artist
+    artist_prueba['self'] = artist_prueba['_self']
+    del artist_prueba['_self']
+    print("----")
+    
+    return jsonify(artist_prueba), 201
+    ##################
+    
+    #return artist_schema.jsonify(new_artist), 201
 
 
 @app.route('/artists', methods=['GET'])
@@ -236,7 +252,18 @@ def createAlbum(idArtist):
     new_album = Album(id, artist_id, name, genre, artist, tracks, _self)
     db.session.add(new_album)
     db.session.commit()
-    return album_schema.jsonify(new_album), 201
+
+    ##################
+    print("----")
+    album_prueba = album_schema.dump(new_album) #diccionario de artist
+    album_prueba['self'] = album_prueba['_self']
+    del album_prueba['_self']
+    print("----")
+    
+    return jsonify(album_prueba), 201
+    ##################
+
+    #return album_schema.jsonify(new_album), 201
 
 
 @app.route('/albums', methods=['GET'])
@@ -357,7 +384,18 @@ def createTrack(albumId):
 
     db.session.add(new_track)
     db.session.commit()
-    return track_schema.jsonify(new_track), 201
+
+    ##################
+    print("----")
+    track_prueba = track_schema.dump(new_track) #diccionario de artist
+    track_prueba['self'] = track_prueba['_self']
+    del track_prueba['_self']
+    print("----")
+    
+    return jsonify(track_prueba), 201
+    ##################
+
+    #return track_schema.jsonify(new_track), 201
 
 
 @app.route('/tracks', methods=['GET'])
