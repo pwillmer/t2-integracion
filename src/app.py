@@ -13,8 +13,10 @@ from types import SimpleNamespace
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@localhost/flaskmysql'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://natkkblgxxospk:4448076a41c6e1329648718baa17fa78007618ff439274fee5e3bde5fd59b484@ec2-184-73-198-174.compute-1.amazonaws.com:5432/d28cpq21a5am3o'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+link_base = 'https://t2-willmer-flask.herokuapp.com/'
 
 
 db = SQLAlchemy(app)
@@ -239,7 +241,7 @@ def createAlbum(idArtist):
         return 'Campos con valores invalidos', 400
 
     # nota mental cuando se haga el deploy cambiar por el link del deploy
-    link = 'http://localhost:5000/albums'
+    link = link_base + 'albums'
 
     name = request.json['name']
 
@@ -373,7 +375,7 @@ def createTrack(albumId):
 
         
     # nota mental cuando se haga el deploy cambiar por el link del deploy
-    link = 'http://localhost:5000/tracks'
+    link = link_base + 'tracks'
 
     albumFound = Album.query.get(albumId)
 
