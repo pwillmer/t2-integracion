@@ -188,8 +188,12 @@ def getArtist(id):
     if artist is None:
         return 'No hay registros de artistas con el id solicitado', 404
 
+
     result = artist_schema.dump(artist)
-    return artist_schema.jsonify(result), 200
+    result['self'] = result['_self']
+    del result['_self']
+
+    return jsonify(result), 200
 
 
 @app.route('/artists/<id>', methods=['DELETE'])
