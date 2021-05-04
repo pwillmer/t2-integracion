@@ -331,6 +331,9 @@ def getArtistAlbums(idArtist):
         return 'No hay registros del album con el id solicitado', 404
 
     result = albums_schema.dump(albums)
+    for album in result:
+        album['self'] = album['_self']
+        del album['_self']
     return jsonify(result), 200
 
 
@@ -485,6 +488,10 @@ def getAllTracksOfArtist(artistId):
       return 'El artista no tiene canciones', 404
 
     result = tracks_schema.dump(tracksList)
+    for track in result:
+        track['self'] = track['_self']
+        del track['_self']
+
     return jsonify(result), 200
 
 
@@ -501,6 +508,10 @@ def getTracksAlbums(albumId):
       return 'No existen asociadas al album', 404
 
     result = tracks_schema.dump(tracks)
+    for track in result:
+        track['self'] = track['_self']
+        del track['_self']
+
     return jsonify(result), 200
 
 @app.route('/tracks/<id>', methods = ['DELETE'])
